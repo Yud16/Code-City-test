@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+//
 class DragDrop extends JFrame {
     private int rectX = 50;
     private int rectY = 50;
