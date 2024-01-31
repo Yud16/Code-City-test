@@ -2,64 +2,47 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-//
-class DragDrop extends JFrame {
-    private int rectX = 50;
-    private int rectY = 50;
-    private int rectWidth = 100;
-    private int rectHeight = 50;
-    private boolean isDragging = false;
+
+class DragDrop extends JPanel {
+    private Shape currentShape;
     private int offsetX, offsetY;
 
     public DragDrop() {
-        setTitle("Draggable Rectangle");
-        setSize(400, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (isWithinRectangle(e.getX(), e.getY())) {
-                    isDragging = true;
-                    offsetX = e.getX() - rectX;
-                    offsetY = e.getY() - rectY;
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                isDragging = false;
-            }
-        });
-
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (isDragging) {
-                    rectX = e.getX() - offsetX;
-                    rectY = e.getY() - offsetY;
-                    repaint();
-                }
-            }
-        });
+        // Add mouse listener
+        addMouseListener(new MyMouseListener());
+        addMouseMotionListener(new MyMouseMotionListener());
     }
 
-    private boolean isWithinRectangle(int x, int y) {
-        return x >= rectX && x <= rectX + rectWidth && y >= rectY && y <= rectY + rectHeight;
+    public void setShape(Shape shape) {
+        this.currentShape = shape;
+        repaint();
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        g.drawRect(rectX, rectY, rectWidth, rectHeight);
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (currentShape != null) {
+            currentShape.draw(g);
+        }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            DragDrop frame = new DragDrop();
-            frame.setVisible(true);
-        });
+    private class MyMouseListener extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (currentShape != null && currentShape.contains(e.getPoint())) {
+                offsetX = e.getX() - currentShape.getX();
+                offsetY = e.getY() - currentShape.getY();
+            }
+        }
+    }
+
+    private class MyMouseMotionListener extends MouseAdapter {
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            if (currentShape != null) {
+                currentShape.setLocation(e.getX() - offsetX, e.getY() - offsetY);
+                repaint();
+            }
+        }
     }
 }
-

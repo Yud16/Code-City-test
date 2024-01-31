@@ -1,0 +1,17 @@
+import javax.swing.*;
+
+public class DragAndDropExample {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Drag and Drop Shapes Example");
+            frame.setSize(400, 400);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            DragDrop d = new DragDrop();
+            d.setShape(new Blocks(50, 50, 100, 100));
+
+            frame.add(d);
+            frame.setVisible(true);
+        });
+    }
+}
