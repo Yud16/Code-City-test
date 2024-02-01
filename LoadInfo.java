@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.Scanner;
+
 
 /**
  * LoadInfo involves a function readSpiderWorldInfo() that reads a .txt file that includes data about the SpiderWorld
@@ -11,17 +13,20 @@ public class LoadInfo {
     /**
      * reads from file and puts info into a hashmap
      */
+
+
     public static Map<String, Object> readSpiderWorldInfo(String filePath) {
+
         Map<String, Object> spiderWorldInfo = new HashMap<>();
         /**
          assuming this is the format of the input file:
          Example Input File:
          3 5             // Spider location (3,5)
          4               // Number of diamonds
-         1 2             // Diamond 1 location (1,2)
-         3 4             // Diamond 2 location (3,4)
-         5 6             // Diamond 3 location (5,6)
-         6 8             // Diamond 4 location (6,8)
+         1 2 RED         // Diamond 1 location (1,2)
+         3 4 BLUE        // Diamond 2 location (3,4)
+         5 6 GREEN       // Diamond 3 location (5,6)
+         6 8 BLACK       // Diamond 4 location (6,8)
          2               // Current level
          */
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -34,14 +39,18 @@ public class LoadInfo {
             int numDiamonds = Integer.parseInt(br.readLine());
             spiderWorldInfo.put("num_diamonds", numDiamonds);
 
-            // Read diamond locations
+            // Read diamond locations, colors, and store in separate lists
             List<int[]> diamondLocations = new ArrayList<>();
+            List<String> diamondColors = new ArrayList<>();
             for (int i = 0; i < numDiamonds; i++) {
-                String[] diamondLocationStr = br.readLine().split(" ");
-                int[] diamondLocation = {Integer.parseInt(diamondLocationStr[0]), Integer.parseInt(diamondLocationStr[1])};
+                String[] diamondInfo = br.readLine().split(" ");
+                int[] diamondLocation = {Integer.parseInt(diamondInfo[0]), Integer.parseInt(diamondInfo[1])};
                 diamondLocations.add(diamondLocation);
+                String diamondColor = diamondInfo[2].trim();
+                diamondColors.add(diamondColor);
             }
             spiderWorldInfo.put("diamond_locations", diamondLocations);
+            spiderWorldInfo.put("diamond_colors", diamondColors);
 
             // Read the current level
             int currentLevel = Integer.parseInt(br.readLine());
@@ -72,6 +81,11 @@ public class LoadInfo {
         return (List<int[]>) map.get("diamond_locations");
     }
 
+    //index of each diamond correlates to the index of the diamond color
+    public static List<String> getDiamondColors(Map<String, Object> map) {
+        return (List<String>) map.get("diamond_colors");
+    }
+
     //mostly for testing
     public static void printSpiderWorldInfo(String filePath) {
 
@@ -80,6 +94,7 @@ public class LoadInfo {
         int numDiamonds = getNumDiamonds(spiderWorldInfo);
         int currentLevel = getCurrentLevel(spiderWorldInfo);
         List<int[]> diamondLocations = getDiamondLocations(spiderWorldInfo);
+        List<String> diamondColors = getDiamondColors(spiderWorldInfo);
 
         // Print Spider World information
         System.out.println("Spider Location: [" + spiderLocation[0] + ", " + spiderLocation[1] + "]");
@@ -93,6 +108,7 @@ public class LoadInfo {
             System.out.println("Invalid diamond locations");
         }
         System.out.println();
+        System.out.println("Diamond Colors: " + diamondColors);
         System.out.println("Current Level: " + currentLevel);
     }
 
@@ -100,14 +116,14 @@ public class LoadInfo {
      * directly written in the code. the second one takes in the filepath from the command line. we can use whichever
      * is more convenient.
      */
-/*
+///*
     public static void main(String[] args) {
         //testing example
         String filePath = "C:/Users/smunt/cs308/spworld/src/test1.txt";
         printSpiderWorldInfo(filePath);
 
     }
-*/
+//*/
 
 /*  //alternate main method that runs takes test file from command line
     public static void main(String[] args) {
