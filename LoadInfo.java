@@ -90,12 +90,13 @@ public class LoadInfo {
         System.out.println("Current Level: " + currentLevel);
     }
 
-}
+
 /*
     public static void main(String[] args) {
         //testing example
         String filePath = "C:/Users/smunt/cs308/spworld/src/test1.txt";
         printSpiderWorldInfo(filePath);
+
     }
-}
 */
+}
