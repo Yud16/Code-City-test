@@ -22,11 +22,13 @@ public class LoadInfo {
          assuming this is the format of the input file:
          Example Input File:
          3 5             // Spider location (3,5)
-         4               // Number of diamonds
-         1 2 RED         // Diamond 1 location (1,2)
-         3 4 BLUE        // Diamond 2 location (3,4)
-         5 6 GREEN       // Diamond 3 location (5,6)
-         6 8 BLACK       // Diamond 4 location (6,8)
+         3               // Number of diamonds
+         1 2          // Diamond 1 location (1,2)
+         3 4         // Diamond 2 location (3,4)
+         5 6        // Diamond 3 location (5,6)
+         1
+         6 8        // Diamond 4 location (6,8)
+         0
          2               // Current level
          */
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {

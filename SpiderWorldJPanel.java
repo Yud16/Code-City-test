@@ -9,9 +9,15 @@ class SpiderPanel extends JPanel {
     private int gridX = 20;
     private int gridY = 200;
     private int[]spider_loc = LoadInfo.getSpiderLocation(spiderWorldInfo);
-    private int num_diamonds = LoadInfo.getNumDiamonds(spiderWorldInfo);
+    private int num_red_diamonds = LoadInfo.getNumDiamonds(spiderWorldInfo);
+    private int num_blue_diamonds = LoadInfo.getNumDiamonds(spiderWorldInfo);
+    private int num_green_diamonds = LoadInfo.getNumDiamonds(spiderWorldInfo);
+
     private int curr_level = LoadInfo.getCurrentLevel(spiderWorldInfo);
-    private List<int[]> diamond_locs = LoadInfo.getDiamondLocations(spiderWorldInfo);
+    private List<int[]> red_diamond_locs = LoadInfo.getDiamondLocations(spiderWorldInfo);
+    private List<int[]> blue_diamond_locs = LoadInfo.getDiamondLocations(spiderWorldInfo);
+    private List<int[]> green_diamond_locs = LoadInfo.getDiamondLocations(spiderWorldInfo);
+
 
     public SpiderPanel(Map<String, Object> spiderWorldInfo) {
         this.spiderWorldInfo = spiderWorldInfo;
@@ -56,15 +62,15 @@ class SpiderPanel extends JPanel {
         }*/
         /*draw blue diamonds
         for (int i = 0; i < num_red_diamonds; i++) {
-            int x = spiderPanel.getGridX() + red_diamond_locs[i][0] * spiderPanel.getGridCellSize();
-            int y = spiderPanel.getGridY() + red_diamond_locs[i][1] * spiderPanel.getGridCellSize();
+            int x = spiderPanel.getGridX() + blue_diamond_locs[i][0] * spiderPanel.getGridCellSize();
+            int y = spiderPanel.getGridY() + blue_diamond_locs[i][1] * spiderPanel.getGridCellSize();
             g.setColor(Color.BLUE);
             g.fillRect(x, y, gridCellSize, gridCellSize);
         }*/
         /*draw green diamonds
         for (int i = 0; i < num_red_diamonds; i++) {
-            int x = spiderPanel.getGridX() + red_diamond_locs[i][0] * spiderPanel.getGridCellSize();
-            int y = spiderPanel.getGridY() + red_diamond_locs[i][1] * spiderPanel.getGridCellSize();
+            int x = spiderPanel.getGridX() + blue_diamond_locs[i][0] * spiderPanel.getGridCellSize();
+            int y = spiderPanel.getGridY() + blue_diamond_locs[i][1] * spiderPanel.getGridCellSize();
             g.setColor(Color.GREEN);
             g.fillRect(x, y, gridCellSize, gridCellSize);
         }*/
@@ -95,6 +101,7 @@ public class SpiderWorldJPanel {
         JFrame frame = new JFrame("Spider World");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(5000, 5000);
+        frame.setLayout(new BorderLayout());
         /*load level info
         String levelFile = "path to txt file with level";
         Map<String, Object> spiderWorldInfo = LoadInfo.readSpiderWorldInfo(levelFile);
@@ -105,6 +112,7 @@ public class SpiderWorldJPanel {
 
         //drag and drop
         DragDrop d = new DragDrop();
+        frame.add(d, BorderLayout.PAGE_END);
 
         frame.setVisible(true);
     }
