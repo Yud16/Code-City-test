@@ -4,9 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 class SpiderPanel extends JPanel {
+    private Map<String, Object> spiderWorldInfo;
     private int gridCellSize = 75;
     private int gridX = 20;
     private int gridY = 200;
+    private int[]spider_loc = LoadInfo.getSpiderLocation(spiderWorldInfo);
+    private int num_diamonds = LoadInfo.getNumDiamonds(spiderWorldInfo);
+    private int curr_level = LoadInfo.getCurrentLevel(spiderWorldInfo);
+    private List<int[]> diamond_locs = LoadInfo.getDiamondLocations(spiderWorldInfo);
+
+    public SpiderPanel(Map<String, Object> spiderWorldInfo) {
+        this.spiderWorldInfo = spiderWorldInfo;
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -26,49 +35,10 @@ class SpiderPanel extends JPanel {
                 g.drawRect(x, y, gridCellSize, gridCellSize);
             }
         }
-
-        // Draw Spider
-        // for now the spider is a dot, will change this later
-        g.setColor(Color.BLACK);
-        g.fillRect(panelWidth / 2 - 10, panelHeight / 2 - 10, 20, 20);
-
-        // Draw "Spider World" text
-        g.setColor(Color.BLACK);
-        g.drawString("Spider World", 10, 20);
-    }
-    public int getGridX() {
-        return gridX;
-    }
-    public int getGridCellSize() {
-        return gridCellSize;
-    }
-    public int getGridY() {
-        return gridY;
-    }
-}
-
-public class SpiderWorldJPanel {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Spider World");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(5000, 5000);
-        //create window for game
-        SpiderPanel spiderPanel = new SpiderPanel();
-        frame.add(spiderPanel);
-
         //draw blocks with text
         DrawBlocks blocks = new DrawBlocks();
         //****draw step, turn, and paint block****
         //****draw the 4 blocks with color up top****
-
-        /*load level info
-        String levelFile = "path to txt file with level";
-        Map<String, Object> spiderWorldInfo = LoadInfo.readSpiderWorldInfo(levelFile);
-        int[]spider_loc = LoadInfo.getSpiderLocation(spiderWorldInfo);
-        int num_diamonds = LoadInfo.getNumDiamonds(spiderWorldInfo);
-        int curr_level = LoadInfo.getCurrentLevel(spiderWorldInfo);
-        List<int[]> diamond_locs = LoadInfo.getDiamondLocations(spiderWorldInfo);
-         */
 
         /*draw spider
         int x = spiderPanel.getGridX() + spider_loc[0] * spiderPanel.getGridCellSize();
@@ -99,9 +69,42 @@ public class SpiderWorldJPanel {
             g.fillRect(x, y, gridCellSize, gridCellSize);
         }*/
 
-        /*drag and drop
+        // Draw Spider
+        // for now the spider is a dot, will change this later
+        g.setColor(Color.BLACK);
+        g.fillRect(panelWidth / 2 - 10, panelHeight / 2 - 10, 20, 20);
+
+        // Draw "Spider World" text
+        g.setColor(Color.BLACK);
+        g.drawString("Spider World", 10, 20);
+    }
+    public int getGridX() {
+        return gridX;
+    }
+    public int getGridCellSize() {
+        return gridCellSize;
+    }
+    public int getGridY() {
+        return gridY;
+    }
+}
+
+public class SpiderWorldJPanel {
+    public static void main(String[] args) {
+        //make window
+        JFrame frame = new JFrame("Spider World");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(5000, 5000);
+        /*load level info
+        String levelFile = "path to txt file with level";
+        Map<String, Object> spiderWorldInfo = LoadInfo.readSpiderWorldInfo(levelFile);
+         */
+        //create window for game
+        SpiderPanel spiderPanel = new SpiderPanel(spiderWorldInfo);
+        frame.add(spiderPanel);
+
+        //drag and drop
         DragDrop d = new DragDrop();
-        frame.add(d);*/
 
         frame.setVisible(true);
     }
