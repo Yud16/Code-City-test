@@ -3,21 +3,26 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * LoadInfo involves a function readSpiderWorldInfo() that reads a .txt file that includes data about the SpiderWorld
+ * game and returns the data in a hashmap. I have also created get methods that simplify the retrieval of the data in the hashmap
+ */
 public class LoadInfo {
-
-    // reads from file and puts info into a hashmap
+    /**
+     * reads from file and puts info into a hashmap
+     */
     public static Map<String, Object> readSpiderWorldInfo(String filePath) {
         Map<String, Object> spiderWorldInfo = new HashMap<>();
-        /*
-        assuming this is the format of the input file:
-        Example Input File:
-            3 5             // Spider location (3,5)
-            4               // Number of diamonds
-            1 2             // Diamond 1 location (1,2)
-            3 4             // Diamond 2 location (3,4)
-            5 6             // Diamond 3 location (5,6)
-            6 8             // Diamond 4 location (6,8)
-            2               // Current level
+        /**
+         assuming this is the format of the input file:
+         Example Input File:
+         3 5             // Spider location (3,5)
+         4               // Number of diamonds
+         1 2             // Diamond 1 location (1,2)
+         3 4             // Diamond 2 location (3,4)
+         5 6             // Diamond 3 location (5,6)
+         6 8             // Diamond 4 location (6,8)
+         2               // Current level
          */
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             // Read spider location
@@ -48,6 +53,7 @@ public class LoadInfo {
         //returns a hashmap
         return spiderWorldInfo;
     }
+
     //get functions
     public static int[] getSpiderLocation(Map<String, Object> map) {
         return (int[]) map.get("spider_location");
@@ -90,7 +96,10 @@ public class LoadInfo {
         System.out.println("Current Level: " + currentLevel);
     }
 
-
+    /** to make it easier to test, i added 2 different main methods, the first one takes in the filepath
+     * directly written in the code. the second one takes in the filepath from the command line. we can use whichever
+     * is more convenient.
+     */
 /*
     public static void main(String[] args) {
         //testing example
@@ -99,4 +108,24 @@ public class LoadInfo {
 
     }
 */
+
+/*  //alternate main method that runs takes test file from command line
+    public static void main(String[] args) {
+
+        String filePath;
+        if (args.length == 1) {
+            // If a file path is provided as a command-line argument
+            filePath = args[0];
+        } else {
+            // If no command-line argument is provided, prompt the user to enter the file path
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter the file path: ");
+            filePath = scanner.nextLine();
+        }
+
+        printSpiderWorldInfo(filePath);
+    }
+
+*/
+
 }
