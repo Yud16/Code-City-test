@@ -21,15 +21,14 @@ public class LoadInfo {
         /**
          assuming this is the format of the input file:
          Example Input File:
-         3 5             // Spider location (3,5)
-         3               // Number of diamonds
-         1 2          // Diamond 1 location (1,2)
-         3 4         // Diamond 2 location (3,4)
-         5 6        // Diamond 3 location (5,6)
-         1
-         6 8        // Diamond 4 location (6,8)
-         0
-         2               // Current level
+         3 5  //spiderlocation
+         1    //num of red diamonds
+         1 2  //red diamond location
+         2    //num of blue diamonds
+         2 3  //blue diamond location
+         4 5  //blue diamond location
+         0    //num of green diamonds
+         2    //current level
          */
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             // Read spider location
@@ -37,20 +36,14 @@ public class LoadInfo {
             int[] spiderLocation = {Integer.parseInt(spiderLocationStr[0]), Integer.parseInt(spiderLocationStr[1])};
             spiderWorldInfo.put("spider_location", spiderLocation);
 
-            // Read the number of diamonds
-            int numDiamonds = Integer.parseInt(br.readLine());
-            spiderWorldInfo.put("num_diamonds", numDiamonds);
-
-            // Read diamond locations, colors, and store in separate lists
+            // Read diamond information
             List<int[]> diamondLocations = new ArrayList<>();
             List<String> diamondColors = new ArrayList<>();
-            for (int i = 0; i < numDiamonds; i++) {
-                String[] diamondInfo = br.readLine().split(" ");
-                int[] diamondLocation = {Integer.parseInt(diamondInfo[0]), Integer.parseInt(diamondInfo[1])};
-                diamondLocations.add(diamondLocation);
-                String diamondColor = diamondInfo[2].trim();
-                diamondColors.add(diamondColor);
-            }
+
+            readDiamonds(br, "Red", spiderWorldInfo);
+            readDiamonds(br, "Blue", spiderWorldInfo);
+            readDiamonds(br, "Green", spiderWorldInfo);
+
             spiderWorldInfo.put("diamond_locations", diamondLocations);
             spiderWorldInfo.put("diamond_colors", diamondColors);
 
@@ -64,14 +57,30 @@ public class LoadInfo {
         //returns a hashmap
         return spiderWorldInfo;
     }
+    private static void readDiamonds(BufferedReader br, String color, Map<String, Object> spiderWorldInfo) throws IOException {
+        int numDiamonds = Integer.parseInt(br.readLine());
+        List<int[]> diamondLocations = new ArrayList<>();
+        int count = 0;
+
+        for (int i = 0; i < numDiamonds; i++) {
+            String[] diamondInfo = br.readLine().split(" ");
+            int[] diamondLocation = {Integer.parseInt(diamondInfo[0]), Integer.parseInt(diamondInfo[1])};
+            diamondLocations.add(diamondLocation);
+            count++;
+        }
+
+        spiderWorldInfo.put(color.toLowerCase() + "_diamond_locations", diamondLocations);
+        spiderWorldInfo.put(color.toLowerCase() + "_diamond_count", count);
+    }
+
 
     //get functions
     public static int[] getSpiderLocation(Map<String, Object> map) {
         return (int[]) map.get("spider_location");
     }
 
-    public static int getNumDiamonds(Map<String, Object> map) {
-        return (int) map.get("num_diamonds");
+    public static int getDiamondCount(String color, Map<String, Object> map) {
+        return (int) map.get(color.toLowerCase() + "_diamond_count");
     }
 
     public static int getCurrentLevel(Map<String, Object> map) {
@@ -79,13 +88,9 @@ public class LoadInfo {
     }
 
     @SuppressWarnings("unchecked")
-    public static List<int[]> getDiamondLocations(Map<String, Object> map) {
-        return (List<int[]>) map.get("diamond_locations");
-    }
 
-    //index of each diamond correlates to the index of the diamond color
-    public static List<String> getDiamondColors(Map<String, Object> map) {
-        return (List<String>) map.get("diamond_colors");
+    public static List<int[]> getDiamondLocationsByColor(String color, Map<String, Object> map) {
+        return (List<int[]>) map.get(color.toLowerCase() + "_diamond_locations");
     }
 
     //mostly for testing
@@ -93,26 +98,38 @@ public class LoadInfo {
 
         Map<String, Object> spiderWorldInfo = readSpiderWorldInfo(filePath);
         int[] spiderLocation = getSpiderLocation(spiderWorldInfo);
-        int numDiamonds = getNumDiamonds(spiderWorldInfo);
         int currentLevel = getCurrentLevel(spiderWorldInfo);
-        List<int[]> diamondLocations = getDiamondLocations(spiderWorldInfo);
-        List<String> diamondColors = getDiamondColors(spiderWorldInfo);
 
-        // Print Spider World information
         System.out.println("Spider Location: [" + spiderLocation[0] + ", " + spiderLocation[1] + "]");
-        System.out.println("Number of Diamonds: " + numDiamonds);
-        System.out.print("Diamond Locations: ");
-        if (diamondLocations != null) {
-            for (int[] diamondLocation : diamondLocations) {
-                System.out.print(Arrays.toString(diamondLocation) + " ");
-            }
-        } else {
-            System.out.println("Invalid diamond locations");
-        }
-        System.out.println();
-        System.out.println("Diamond Colors: " + diamondColors);
         System.out.println("Current Level: " + currentLevel);
+
+        printDiamonds("Red", spiderWorldInfo);
+        printDiamonds("Blue", spiderWorldInfo);
+        printDiamonds("Green", spiderWorldInfo);
     }
+
+    private static void printDiamonds(String color, Map<String, Object> spiderWorldInfo) {
+        int count = getDiamondCount(color, spiderWorldInfo);
+        List<int[]> diamondLocations = getDiamondLocationsByColor(color, spiderWorldInfo);
+
+        System.out.println("Number of " + color + " Diamonds: " + count);
+        System.out.print(color + " Diamond Locations: ");
+
+        if (count > 0) {
+            for (int i = 0; i < diamondLocations.size(); i++) {
+                int[] diamondLocation = diamondLocations.get(i);
+                System.out.print(Arrays.toString(diamondLocation));
+
+                if (i < count - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
+        } else {
+            System.out.println("No " + color + " Diamonds.");
+        }
+    }
+
 
     /** to make it easier to test, i added 2 different main methods, the first one takes in the filepath
      * directly written in the code. the second one takes in the filepath from the command line. we can use whichever
@@ -121,7 +138,7 @@ public class LoadInfo {
 /*
     public static void main(String[] args) {
         //testing example
-        String filePath = "C:/Users/smunt/cs308/spworld/src/test1.txt";
+        String filePath = "C:/Users/smunt/cs308/spworld/src/loadinfotest.txt";
         printSpiderWorldInfo(filePath);
 
     }
