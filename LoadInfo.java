@@ -135,14 +135,14 @@ public class LoadInfo {
      * directly written in the code. the second one takes in the filepath from the command line. we can use whichever
      * is more convenient.
      */
-/*
+
     public static void main(String[] args) {
         //testing example
-        String filePath = "C:/Users/smunt/cs308/spworld/src/loadinfotest.txt";
+        String filePath = "./loadinfotest.txt";
         printSpiderWorldInfo(filePath);
 
     }
-*/
+
 
 /*  //alternate main method that runs takes test file from command line
     public static void main(String[] args) {

@@ -3,6 +3,7 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class DrawBlocks extends JComponent {
+    /*
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -12,9 +13,9 @@ public class DrawBlocks extends JComponent {
         drawCenteredText(g2d, 50, 50, 100, 50, "step", Color.GRAY);
         drawCenteredText(g2d, 50, 110, 100, 50, "turn", Color.GRAY);
         drawCenteredText(g2d, 50, 170, 100, 50, "paint", Color.RED);
-    }
+    }*/
 
-    protected void drawCenteredText(Graphics2D g2d, double x, double y, double width, double height, String text, Color color) {
+    public static void drawCenteredText(Graphics2D g2d, double x, double y, double width, double height, String text, Color color) {
         // Draw rectangle
         Rectangle2D.Double r = new Rectangle2D.Double(x, y, width, height);
         g2d.setColor(color);
