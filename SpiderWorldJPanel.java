@@ -53,6 +53,7 @@ class SpiderPanel extends JPanel {
         DrawBlocks.drawCenteredText(g2d, 1000, 50, 100, 50, "step", Color.GRAY);
         DrawBlocks.drawCenteredText(g2d, 1000, 110, 100, 50, "turn", Color.GRAY);
         DrawBlocks.drawCenteredText(g2d, 1000, 170, 100, 50, "paint", Color.RED);
+
         //****draw the 4 blocks with color up top****
 
         //world info variables
@@ -117,9 +118,15 @@ public class SpiderWorldJPanel {
         containerPanel.add(spiderPanel);
         frame.add(containerPanel);
 
-        //drag and drop
-        DragDrop d = new DragDrop();
-        frame.add(d, BorderLayout.PAGE_END);
+
+        //DragDrop d = new DragDrop();
+        SwingUtilities.invokeLater(() -> {
+            DragDrop d = new DragDrop();
+            d.setShape(new Blocks(1000, 50, 100, 50,"step", Color.GRAY));
+            d.setShape(new Blocks(1000, 110, 100, 50, "turn", Color.GRAY));
+            d.setShape(new Blocks(1000, 170, 100, 50, "paint", Color.RED));
+            frame.add(d);
+        });
         frame.setVisible(true);
     }
 }

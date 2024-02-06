@@ -22,7 +22,7 @@ class DragDrop extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (currentShape != null) {
-            currentShape.draw(g);
+            currentShape.draw((Graphics2D) g);
         }
     }
 
