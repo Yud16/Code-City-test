@@ -4,7 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 class DragDrop extends JPanel {
-    private Shape currentShape;
+    private Shape currentShape = null;
     private int offsetX, offsetY;
 
     public DragDrop() {
