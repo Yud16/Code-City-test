@@ -26,5 +26,9 @@ public class DrawBlocks extends JComponent {
     
         // Draw the text centered both horizontally and vertically on top of the rectangle
         g2d.drawString(text, textX, textY);
+
+        //move blocks
+        DragDrop d = new DragDrop();
+        d.setShape(new Blocks((int)x, (int)y, (int)width, (int)height));
     }
 }
